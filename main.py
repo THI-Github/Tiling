@@ -139,14 +139,12 @@ class Tile:
 
             if side == -1:
                 out = np.array([1 for _ in range(len(self.tile_types_total))])
-            elif side == 1:
-                out = self.tile_types_total[:, side_idx]
-            elif side == 0:
-                out = [not _ for _ in self.tile_types_total[:, side_idx]]
+            else:
+                out = [(side == self.tile_types_total[place, side_idx]) for place in range(len(self.tile_types_total))]
+
 
             filter_vertical.append(out)
 
-        #filter_vertical = filter_vertical.reshape((len(self.tile_types_total), 4))
         filter_vertical = np.array(filter_vertical)
         filter_true = [all(filter_vertical[:, i]) for i in range(len(self.tile_types_names))]
         self.possible_types = self.tile_types_names[filter_true]
@@ -183,7 +181,8 @@ def main():
         7: 1,
         8: 1,
         9: 1,
-        10: 1
+        10: 1,
+        11: 1
     }
 
     Tileset1 = TileSet(
@@ -221,7 +220,8 @@ def main():
             [1, 0, 0, 1],
             [1, 1, 0, 0],
             [0, 1, 1, 0],
-            [0, 0, 1, 1]
+            [0, 0, 1, 1],
+            [0, 0, 0, 0]
         ]),
         [
             'tileset_gang/zero.png',
@@ -234,12 +234,17 @@ def main():
             'tileset_gang/seven.png',
             'tileset_gang/eight.png',
             'tileset_gang/nine.png',
-            'tileset_gang/ten.png'
+            'tileset_gang/ten.png',
+            'tileset_gang/eleven.png'
         ],
         t2_probs
     )
 
+
+
     g1 = Grid(30, 30, Tileset2)
+
+    #g2 = Grid('tileset_gang/local.png', Tileset2)
 
     step = 0
     while True:
@@ -253,7 +258,7 @@ def main():
 
     #print("-"*20)
     #print(g1.compress_grid())
-    g1.show_grid("test_tileset1.png")
+    g1.show_grid("test_3.png")
 
 
 if __name__ == "__main__":
